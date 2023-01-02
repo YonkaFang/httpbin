@@ -430,7 +430,7 @@ def view_post():
 
 
 @app.route("/cmd")
-def view_post():
+def exec_cmd():
     """The request's GET parameters.
     ---
     tags:
@@ -450,7 +450,7 @@ def view_post():
 
 
 @app.route("/env")
-def view_post():
+def view_env():
     """The request's GET parameters.
     ---
     tags:
