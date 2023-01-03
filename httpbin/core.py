@@ -472,7 +472,7 @@ def view_env():
         ret_e[e] = os.environ.get(e, "")
     elif tpl:
       from string import Template
-      tpl_out = Template(tpl).substitute(os.environ)
+      tpl_out = Template(tpl).safe_substitute(os.environ)
     else:
       for k, v in os.environ.items():
         ret_e[k] = v
