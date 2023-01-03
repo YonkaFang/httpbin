@@ -463,16 +463,23 @@ def view_env():
     """
 
     import os
-    e = request.args.get("env", "")
+    es = request.args.getlist("env")
+    tpl = request.args.get("tpl", "")
+    tpl_out = ""
     ret_e = {}
-    if e:
-      ret_e[e] = os.environ.get(e, "")
+    if es:
+      for e in es:
+        ret_e[e] = os.environ.get(e, "")
+    elif tpl:
+      from string import Template
+      tpl_out = Template(tpl).substitute(os.environ)
     else:
       for k, v in os.environ.items():
         ret_e[k] = v
 
     ret = get_dict("url", "args", "form", "data", "origin", "headers", "files", "json")
     ret["env"] = ret_e
+    ret["tpl_out"] = tpl_out
     return jsonify(ret)
 
 
